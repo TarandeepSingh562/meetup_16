@@ -1,0 +1,47 @@
+import java.nio.file.FileVisitResult
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.SimpleFileVisitor
+import java.nio.file.attribute.BasicFileAttributes
+
+subprojects.each { subproject -> evaluationDependsOn(subproject.name) }
+
+task dist(type: Exec) {
+	dependsOn ':by.jprof.impl.app:assemble'
+
+	executable = "${System.properties['java.home']}/bin/jlink"
+	args = [
+			'--module-path',
+			"${System.properties['java.home']}/jmods:" + (project(':by.jprof.api').jar.outputs.files +
+					project(':by.jprof.impl.en').jar.outputs.files +
+					project(':by.jprof.impl.be').jar.outputs.files +
+					project(':by.jprof.impl.app').jar.outputs.files).join(':'),
+			'--add-modules',
+			'by.jprof.impl.app',
+			'--output',
+			'build',
+			'--launcher',
+			"app=by.jprof.impl.app/${project(':by.jprof.impl.app').mainClassName}"
+	]
+
+	doFirst {
+		Files.walkFileTree(file('build').toPath(), new SimpleFileVisitor<Path>() {
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
+
+			@Override
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+				Files.delete(dir);
+				return FileVisitResult.CONTINUE;
+			}
+		});
+	}
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.2.1'
+	distributionType Wrapper.DistributionType.ALL
+}
