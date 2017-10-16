@@ -8,9 +8,9 @@ export PATH=$JAVA_HOME/bin:$PATH
 ## Assemble and run
 
 ```
-./gradlew clean assemble
+./gradlew -q clean assemble
 
-./gradlew clean :by.jprof.app:run
+./gradlew -q clean :by.jprof.app:run
 
 ```
 
@@ -28,6 +28,7 @@ by.jprof.api -> java.base
 ```
 jdeps --module-path by.jprof.api/build/libs/by.jprof.api.jar:by.jprof.impl.en/build/libs/by.jprof.impl.en.jar:by.jprof.impl.be/build/libs/by.jprof.impl.be.jar:by.jprof.impl.chr/build/libs/by.jprof.impl.chr.jar by.jprof.app/build/libs/by.jprof.app.jar
 
+jar by.jprof.app/build/libs/by.jprof.app.jar
 by.jprof.app
  [file:///home/madhead/Projects/meetup_16/jigsaw/by.jprof.app/build/libs/by.jprof.app.jar]
    requires by.jprof.api
@@ -35,12 +36,19 @@ by.jprof.app
    requires by.jprof.impl.chr
    requires by.jprof.impl.en
    requires mandated java.base (@9)
+   requires java.xml (@9)
 by.jprof.app -> by.jprof.api
 by.jprof.app -> java.base
+by.jprof.app -> java.xml
    by.jprof.app                                       -> by.jprof.api                                       by.jprof.api
    by.jprof.app                                       -> java.io                                            java.base
    by.jprof.app                                       -> java.lang                                          java.base
    by.jprof.app                                       -> java.util                                          java.base
+   by.jprof.app                                       -> javax.xml.parsers                                  java.xml
+   by.jprof.app                                       -> javax.xml.transform                                java.xml
+   by.jprof.app                                       -> javax.xml.transform.dom                            java.xml
+   by.jprof.app                                       -> javax.xml.transform.stream                         java.xml
+   by.jprof.app                                       -> org.w3c.dom                                        java.xml
 ```
 
 ## jlink
@@ -57,7 +65,7 @@ Hello, world!
 There is a Gradle task for jlink package:
 
 ```
-./gradlew dist
+./gradlew -q dist
 
 build/bin/app
 Hello, world!
