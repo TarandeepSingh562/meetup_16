@@ -4,11 +4,12 @@ plugins {
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_9
-mainClassName = 'by.jprof.impl.app.Main'
-javaModule.name = 'by.jprof.impl.app'
+mainClassName = 'by.jprof.app.Main'
+javaModule.name = 'by.jprof.app'
 
 dependencies {
 	compile project(':by.jprof.api')
 	compile project(':by.jprof.impl.en')
 	compile project(':by.jprof.impl.be')
+	compile project(':by.jprof.impl.chr')
 }

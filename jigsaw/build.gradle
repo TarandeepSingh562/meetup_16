@@ -7,7 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes
 subprojects.each { subproject -> evaluationDependsOn(subproject.name) }
 
 task dist(type: Exec) {
-	dependsOn ':by.jprof.impl.app:assemble'
+	dependsOn ':by.jprof.app:assemble'
 
 	executable = "${System.properties['java.home']}/bin/jlink"
 	args = [
@@ -15,13 +15,14 @@ task dist(type: Exec) {
 			"${System.properties['java.home']}/jmods:" + (project(':by.jprof.api').jar.outputs.files +
 					project(':by.jprof.impl.en').jar.outputs.files +
 					project(':by.jprof.impl.be').jar.outputs.files +
-					project(':by.jprof.impl.app').jar.outputs.files).join(':'),
+					project(':by.jprof.impl.chr').jar.outputs.files +
+					project(':by.jprof.app').jar.outputs.files).join(':'),
 			'--add-modules',
-			'by.jprof.impl.app',
+			'by.jprof.app',
 			'--output',
 			'build',
 			'--launcher',
-			"app=by.jprof.impl.app/${project(':by.jprof.impl.app').mainClassName}"
+			"app=by.jprof.app/${project(':by.jprof.app').mainClassName}"
 	]
 
 	doFirst {

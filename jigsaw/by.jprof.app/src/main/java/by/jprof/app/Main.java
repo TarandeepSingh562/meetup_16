@@ -1,4 +1,4 @@
-package by.jprof.impl.app;
+package by.jprof.app;
 
 import by.jprof.api.GreetingsService;
 
