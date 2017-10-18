@@ -1,4 +1,4 @@
-# Java 9 / Jigsaw + Gradle
+# Java 9 / Jigsaw + jlink + Gradle + Docker
 
 ```
 export JAVA_HOME=/opt/java/jdk-9
@@ -71,4 +71,17 @@ build/bin/app
 Hello, world!
 Вітаем, world!
 ᎣᏏᏲ, world!
+```
+
+## Docker
+```
+docker build -t jprof .
+
+docker run jprof
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<greetings>
+    <greeting>Hello, world!</greeting>
+    <greeting>Вітаем, world!</greeting>
+    <greeting>ᎣᏏᏲ, world!</greeting>
+</greetings>
 ```
